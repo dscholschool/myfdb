@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "name": "Thái Lan",
+    "code": "THA",
+    "flagUrl": "assets/images/national_teams/thailand-flag.png",
+    "homeStadium": "Rajamangala National Stadium",
+    "capacity": 49549,
+    "group": "A"
+  },
+  {
+    "id": 2,
+    "name": "Việt Nam",
+    "code": "VIE",
+    "flagUrl": "assets/images/national_teams/vietnam-flag.png",
+    "homeStadium": "Mỹ Đình National Stadium",
+    "capacity": 40192,
+    "group": "B"
+  },
+  {
+    "id": 3,
+    "name": "Malaysia",
+    "code": "MAS",
+    "flagUrl": "assets/images/national_teams/malaysia-flag.png",
+    "homeStadium": "Bukit Jalil National Stadium",
+    "capacity": 87411,
+    "group": "A"
+  },
+  {
+    "id": 4,
+    "name": "Singapore",
+    "code": "SGP",
+    "flagUrl": "assets/images/national_teams/singapore-flag.png",
+    "homeStadium": "Singapore National Stadium",
+    "capacity": 55000,
+    "group": "A"
+  },
+  {
+    "id": 5,
+    "name": "Cam-pu-chia",
+    "code": "CAM",
+    "flagUrl": "assets/images/national_teams/cambodia-flag.png",
+    "homeStadium": "Morodok Techo National Stadium",
+    "capacity": 60000,
+    "group": "A"
+  },
+  {
+    "id": 6,
+    "name": "Timor-Leste",
+    "code": "TLS",
+    "flagUrl": "assets/images/national_teams/timor-leste-flag.png",
+    "homeStadium": "Estádio Nacional de Timor Leste",
+    "capacity": 5000,
+    "group": "A"
+  },
+  {
+    "id": 7,
+    "name": "Indonesia",
+    "code": "INA",
+    "flagUrl": "assets/images/national_teams/indonesia-flag.png",
+    "homeStadium": "Gelora Bung Karno Stadium",
+    "capacity": 77659,
+    "group": "B"
+  },
+  {
+    "id": 8,
+    "name": "Philippines",
+    "code": "PHI",
+    "flagUrl": "assets/images/national_teams/philippines-flag.png",
+    "homeStadium": "Rizal Memorial Stadium",
+    "capacity": 12573,
+    "group": "B"
+  },
+  {
+    "id": 9,
+    "name": "Myanmar",
+    "code": "MYA",
+    "flagUrl": "assets/images/national_teams/myanmar-flag.png",
+    "homeStadium": "Thuwunna Stadium",
+    "capacity": 32000,
+    "group": "B"
+  },
+  {
+    "id": 10,
+    "name": "Lào",
+    "code": "LAO",
+    "flagUrl": "assets/images/national_teams/laos-flag.png",
+    "homeStadium": "New Laos National Stadium",
+    "capacity": 25000,
+    "group": "B"
+  }
+]

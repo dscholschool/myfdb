@@ -1,0 +1,200 @@
+[
+  {
+    "matchId": "M01",
+    "group": "A",
+    "homeTeamId": 1,
+    "awayTeamId": 3,
+    "status": "FINISHED",
+    "date": "2024-11-23T12:00:00Z",
+    "score": { "home": 2, "away": 1 }
+  },
+  {
+    "matchId": "M02",
+    "group": "A",
+    "homeTeamId": 4,
+    "awayTeamId": 5,
+    "status": "FINISHED",
+    "date": "2024-11-23T15:00:00Z",
+    "score": { "home": 1, "away": 1 }
+  },
+  {
+    "matchId": "M03",
+    "group": "A",
+    "homeTeamId": 6,
+    "awayTeamId": 1,
+    "status": "FINISHED",
+    "date": "2024-11-26T12:00:00Z",
+    "score": { "home": 0, "away": 5 }
+  },
+  {
+    "matchId": "M04",
+    "group": "A",
+    "homeTeamId": 3,
+    "awayTeamId": 4,
+    "status": "FINISHED",
+    "date": "2024-11-26T15:00:00Z",
+    "score": { "home": 2, "away": 2 }
+  },
+  {
+    "matchId": "M05",
+    "group": "A",
+    "homeTeamId": 5,
+    "awayTeamId": 6,
+    "status": "FINISHED",
+    "date": "2024-11-29T12:00:00Z",
+    "score": { "home": 3, "away": 0 }
+  },
+  {
+    "matchId": "M06",
+    "group": "A",
+    "homeTeamId": 1,
+    "awayTeamId": 4,
+    "status": "FINISHED",
+    "date": "2024-11-29T15:00:00Z",
+    "score": { "home": 3, "away": 0 }
+  },
+  {
+    "matchId": "M07",
+    "group": "A",
+    "homeTeamId": 3,
+    "awayTeamId": 5,
+    "status": "FINISHED",
+    "date": "2024-12-02T12:00:00Z",
+    "score": { "home": 4, "away": 1 }
+  },
+  {
+    "matchId": "M08",
+    "group": "A",
+    "homeTeamId": 4,
+    "awayTeamId": 6,
+    "status": "FINISHED",
+    "date": "2024-12-02T15:00:00Z",
+    "score": { "home": 2, "away": 0 }
+  },
+  {
+    "matchId": "M09",
+    "group": "A",
+    "homeTeamId": 6,
+    "awayTeamId": 3,
+    "status": "FINISHED",
+    "date": "2024-12-05T12:00:00Z",
+    "score": { "home": 0, "away": 7 }
+  },
+  {
+    "matchId": "M10",
+    "group": "A",
+    "homeTeamId": 1,
+    "awayTeamId": 5,
+    "status": "FINISHED",
+    "date": "2024-12-05T15:00:00Z",
+    "score": { "home": 3, "away": 1 }
+  },
+  {
+    "matchId": "M11",
+    "group": "B",
+    "homeTeamId": 2,
+    "awayTeamId": 10,
+    "status": "FINISHED",
+    "date": "2024-11-24T12:00:00Z",
+    "score": { "home": 6, "away": 0 }
+  },
+  {
+    "matchId": "M12",
+    "group": "B",
+    "homeTeamId": 7,
+    "awayTeamId": 9,
+    "status": "FINISHED",
+    "date": "2024-11-24T15:00:00Z",
+    "score": { "home": 3, "away": 1 }
+  },
+  {
+    "matchId": "M13",
+    "group": "B",
+    "homeTeamId": 8,
+    "awayTeamId": 2,
+    "status": "FINISHED",
+    "date": "2024-11-27T12:00:00Z",
+    "score": { "home": 0, "away": 3 }
+  },
+  {
+    "matchId": "M14",
+    "group": "B",
+    "homeTeamId": 10,
+    "awayTeamId": 7,
+    "status": "FINISHED",
+    "date": "2024-11-27T15:00:00Z",
+    "score": { "home": 1, "away": 5 }
+  },
+  {
+    "matchId": "M15",
+    "group": "B",
+    "homeTeamId": 9,
+    "awayTeamId": 8,
+    "status": "FINISHED",
+    "date": "2024-11-30T12:00:00Z",
+    "score": { "home": 1, "away": 1 }
+  },
+  {
+    "matchId": "M16",
+    "group": "B",
+    "homeTeamId": 2,
+    "awayTeamId": 7,
+    "status": "FINISHED",
+    "date": "2024-11-30T15:00:00Z",
+    "score": { "home": 1, "away": 0 }
+  },
+  {
+    "matchId": "M17",
+    "group": "B",
+    "homeTeamId": 7,
+    "awayTeamId": 8,
+    "status": "FINISHED",
+    "date": "2024-12-03T12:00:00Z",
+    "score": { "home": 2, "away": 0 }
+  },
+  {
+    "matchId": "M18",
+    "group": "B",
+    "homeTeamId": 10,
+    "awayTeamId": 9,
+    "status": "FINISHED",
+    "date": "2024-12-03T15:00:00Z",
+    "score": { "home": 2, "away": 2 }
+  },
+  {
+    "matchId": "M19",
+    "group": "B",
+    "homeTeamId": 9,
+    "awayTeamId": 2,
+    "status": "FINISHED",
+    "date": "2024-12-06T12:00:00Z",
+    "score": { "home": 0, "away": 5 }
+  },
+  {
+    "matchId": "M20",
+    "group": "B",
+    "homeTeamId": 8,
+    "awayTeamId": 10,
+    "status": "FINISHED",
+    "date": "2024-12-06T15:00:00Z",
+    "score": { "home": 3, "away": 1 }
+  },
+  {
+    "matchId": "M21",
+    "group": "SF",
+    "homeTeamId": 3,
+    "awayTeamId": 2,
+    "status": "SCHEDULED",
+    "date": "2024-12-10T13:00:00Z",
+    "score": null
+  },
+  {
+    "matchId": "M22",
+    "group": "SF",
+    "homeTeamId": 7,
+    "awayTeamId": 1,
+    "status": "SCHEDULED",
+    "date": "2024-12-11T13:00:00Z",
+    "score": null
+  }
+]
