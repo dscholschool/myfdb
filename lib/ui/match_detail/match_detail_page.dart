@@ -22,9 +22,9 @@ class _MatchDetailPageState extends State<MatchDetailPage> {
 
     // === LOGIC CHIA LUỒNG ===
     if (widget.match.status == 'FINISHED') {
-      // Nếu đã đá: Tải thống kê & đội hình
-      _viewModel.loadDetails(widget.match.matchId);
+      // Nếu đã đá: Tải đội hình & thống kê
       _viewModel.loadLineups(widget.match.homeTeamId, widget.match.awayTeamId);
+      _viewModel.loadDetails(widget.match.matchId);
     } else {
       // Nếu sắp đá: Tải dự đoán DA
       _viewModel.loadPrediction(widget.match);
@@ -78,19 +78,19 @@ class _MatchDetailPageState extends State<MatchDetailPage> {
   Widget _buildFinishedMatchContent() {
     return Column(
       children: [
-        StreamBuilder<MatchDetail>(
-          stream: _viewModel.detailsStream,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) return _buildStatsSection(context, snapshot.data!);
-            return const SizedBox(height: 50, child: Center(child: CircularProgressIndicator()));
-          },
-        ),
-        const Divider(thickness: 1, height: 1),
         StreamBuilder<Map<String, List<Player>>>(
           stream: _viewModel.lineupStream,
           builder: (context, snapshot) {
             if (snapshot.hasData) return _buildLineupSection(context, snapshot.data!);
             return const SizedBox.shrink();
+          },
+        ),
+        const Divider(thickness: 1, height: 1),
+        StreamBuilder<MatchDetail>(
+          stream: _viewModel.detailsStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) return _buildStatsSection(context, snapshot.data!);
+            return const SizedBox(height: 50, child: Center(child: CircularProgressIndicator()));
           },
         ),
       ],
@@ -213,6 +213,56 @@ class _MatchDetailPageState extends State<MatchDetailPage> {
     );
   }
 
+  Widget _buildLineupSection(BuildContext context, Map<String, List<Player>> lineups) {
+    final homePlayers = lineups['home'] ?? [];
+    final awayPlayers = lineups['away'] ?? [];
+    final homeTeamName = widget.match.homeTeam?.name ?? "Home Team";
+    final awayTeamName = widget.match.awayTeam?.name ?? "Away Team";
+
+    if (homePlayers.isEmpty && awayPlayers.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.all(20),
+        child: Center(child: Text("Chưa có thông tin đội hình")),
+      );
+    }
+
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          Center(
+            child: Text(
+              'Đội hình ra sân',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: Colors.black87),
+            ),
+          ),
+          const SizedBox(height: 4),
+          const SizedBox(height: 16),
+
+          TacticalBoard(
+            homePlayers: homePlayers,
+            awayPlayers: awayPlayers,
+            homeTeamName: homeTeamName,
+            awayTeamName: awayTeamName,
+            homeFlagUrl: widget.match.homeTeam?.flagUrl,
+            awayFlagUrl: widget.match.awayTeam?.flagUrl,
+
+            // === THÊM PHẦN NÀY ĐỂ CHUYỂN TRANG ===
+            onPlayerTap: (player) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PlayerDetailPage(player: player),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildStatsSection(BuildContext context, MatchDetail details) {
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
@@ -252,64 +302,6 @@ class _MatchDetailPageState extends State<MatchDetailPage> {
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLineupSection(BuildContext context, Map<String, List<Player>> lineups) {
-    final homePlayers = lineups['home'] ?? [];
-    final awayPlayers = lineups['away'] ?? [];
-    return Container(
-      color: Theme.of(context).scaffoldBackgroundColor,
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          Center(
-            child: Text(
-              'Đội hình ra sân',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: Colors.black87),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: homePlayers.map((player) {
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => PlayerDetailPage(player: player)));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4.0),
-                        child: Text('${player.jerseyNumber} - ${player.name}', style: const TextStyle(fontSize: 14, color: Colors.black87), maxLines: 1, overflow: TextOverflow.ellipsis),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: awayPlayers.map((player) {
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => PlayerDetailPage(player: player)));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4.0),
-                        child: Text('${player.name} - ${player.jerseyNumber}', textAlign: TextAlign.end, style: const TextStyle(fontSize: 14, color: Colors.black87), maxLines: 1, overflow: TextOverflow.ellipsis),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ],
-          )
         ],
       ),
     );
@@ -514,6 +506,218 @@ class _StatBubble extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       child: Text(text, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: isHighlighted ? Colors.white : Colors.black87)),
+    );
+  }
+}
+
+// === WIDGET SÂN BÓNG MỚI ===
+class TacticalBoard extends StatelessWidget {
+  final List<Player> homePlayers;
+  final List<Player> awayPlayers;
+  final String homeTeamName;
+  final String awayTeamName;
+  final String? homeFlagUrl;
+  final String? awayFlagUrl;
+  // Thêm callback để xử lý khi nhấn vào cầu thủ
+  final Function(Player) onPlayerTap;
+
+  const TacticalBoard({
+    super.key,
+    required this.homePlayers,
+    required this.awayPlayers,
+    required this.homeTeamName,
+    required this.awayTeamName,
+    this.homeFlagUrl,
+    this.awayFlagUrl,
+    required this.onPlayerTap, // Bắt buộc truyền vào
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // Phân loại cầu thủ (Giữ nguyên)
+    final hGK = homePlayers.where((p) => p.position.contains('Thủ môn') || p.position.contains('GK')).toList();
+    final hDF = homePlayers.where((p) => p.position.contains('Hậu vệ') || p.position.contains('DF')).toList();
+    final hMF = homePlayers.where((p) => p.position.contains('Tiền vệ') || p.position.contains('MF')).toList();
+    final hFW = homePlayers.where((p) => p.position.contains('Tiền đạo') || p.position.contains('FW')).toList();
+
+    final aGK = awayPlayers.where((p) => p.position.contains('Thủ môn') || p.position.contains('GK')).toList();
+    final aDF = awayPlayers.where((p) => p.position.contains('Hậu vệ') || p.position.contains('DF')).toList();
+    final aMF = awayPlayers.where((p) => p.position.contains('Tiền vệ') || p.position.contains('MF')).toList();
+    final aFW = awayPlayers.where((p) => p.position.contains('Tiền đạo') || p.position.contains('FW')).toList();
+
+    return Container(
+      height: 640,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      decoration: BoxDecoration(
+        color: const Color(0xFF12D870), // Màu cỏ xanh dịu
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 6, offset: const Offset(0, 4)),
+        ],
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: Stack(
+        children: [
+          // LỚP 1: VẼ SÂN (Giữ nguyên)
+          Center(child: Container(height: 2, color: Colors.white.withOpacity(0.4))),
+          Center(
+            child: Container(
+              width: 100, height: 100,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.white.withOpacity(0.4), width: 2),
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+          Positioned(
+            top: 50, left: 80, right: 80, height: 80,
+            child: Container(decoration: BoxDecoration(border: Border.all(color: Colors.white.withOpacity(0.4), width: 2))),
+          ),
+          Positioned(
+            bottom: 50, left: 80, right: 80, height: 80,
+            child: Container(decoration: BoxDecoration(border: Border.all(color: Colors.white.withOpacity(0.4), width: 2))),
+          ),
+
+          // LỚP 2: BỐ TRÍ CẦU THỦ
+          Column(
+            children: [
+              const SizedBox(height: 50),
+              // ĐỘI NHÀ
+              Expanded(
+                flex: 4,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildLine(hGK),
+                    _buildLine(hDF),
+                    _buildLine(hMF),
+                    _buildLine(hFW),
+                  ],
+                ),
+              ),
+              // KHOẢNG CÁCH GIỮA 2 ĐỘI
+              const SizedBox(height: 40),
+              // ĐỘI KHÁCH
+              Expanded(
+                flex: 4,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildLine(aFW),
+                    _buildLine(aMF),
+                    _buildLine(aDF),
+                    _buildLine(aGK),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 50),
+            ],
+          ),
+
+          // LỚP 3: HEADER & FOOTER (Giữ nguyên)
+          Positioned(
+            top: 0, left: 0, right: 0,
+            child: Container(
+              height: 45,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              color: Colors.white.withOpacity(0.9),
+              child: Row(
+                children: [
+                  Image.asset(homeFlagUrl!, width: 24),
+                  const SizedBox(width: 8),
+                  Text(homeTeamName.toUpperCase(), style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 14)),
+                  const Spacer(),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0, left: 0, right: 0,
+            child: Container(
+              height: 45,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              color: Colors.white.withOpacity(0.9),
+              child: Row(
+                children: [
+                  Image.asset(awayFlagUrl!, width: 24),
+                  const SizedBox(width: 8),
+                  Text(awayTeamName.toUpperCase(), style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 14)),
+                  const Spacer(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLine(List<Player> linePlayers) {
+    if (linePlayers.isEmpty) return const SizedBox(height: 30);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: linePlayers.map((player) => _buildPlayerIcon(player)).toList(),
+    );
+  }
+
+  Widget _buildPlayerIcon(Player player) {
+    String displayName = player.name;
+    if (player.name.contains(' ')) {
+      displayName = player.name.split(' ').last;
+    }
+
+    // === THÊM GESTURE DETECTOR ĐỂ BẮT SỰ KIỆN NHẤN ===
+    return GestureDetector(
+      onTap: () => onPlayerTap(player), // Gọi callback khi nhấn
+      behavior: HitTestBehavior.opaque, // Giúp bắt sự kiện chính xác hơn
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 4)],
+            ),
+            child: CircleAvatar(
+              radius: 18,
+              backgroundColor: Colors.grey.shade300,
+              backgroundImage: player.imageUrl.isNotEmpty
+                  ? AssetImage(player.imageUrl)
+                  : null,
+              child: player.imageUrl.isEmpty
+                  ? const Icon(Icons.person, color: Colors.grey)
+                  : null,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "${player.jerseyNumber}",
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.8),
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  shadows: const [Shadow(blurRadius: 2, color: Colors.black)],
+                ),
+              ),
+              const SizedBox(width: 4),
+              Text(
+                displayName,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  shadows: [Shadow(blurRadius: 3, color: Colors.black)],
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }

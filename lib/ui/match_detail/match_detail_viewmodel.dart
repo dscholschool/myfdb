@@ -5,21 +5,12 @@ import 'package:myfdb/data/repository/repository.dart';
 class MatchDetailViewModel {
   final _repository = DefaultRepository();
 
-  final _detailsStream = StreamController<MatchDetail>();
-  Stream<MatchDetail> get detailsStream => _detailsStream.stream;
   final _lineupStream = StreamController<Map<String, List<Player>>>();
   Stream<Map<String, List<Player>>> get lineupStream => _lineupStream.stream;
+  final _detailsStream = StreamController<MatchDetail>();
+  Stream<MatchDetail> get detailsStream => _detailsStream.stream;
   final _predictionStream = StreamController<MatchPrediction>();
   Stream<MatchPrediction> get predictionStream => _predictionStream.stream;
-
-
-  void loadDetails(String matchId) {
-    _repository.getMatchDetails(matchId).then((details) {
-      if (details != null) {
-        _detailsStream.sink.add(details);
-      }
-    });
-  }
 
   void loadLineups(int homeTeamId, int awayTeamId) async {
     // Gọi repository 2 lần
@@ -33,6 +24,14 @@ class MatchDetailViewModel {
         'away': awayPlayers,
       });
     }
+  }
+
+  void loadDetails(String matchId) {
+    _repository.getMatchDetails(matchId).then((details) {
+      if (details != null) {
+        _detailsStream.sink.add(details);
+      }
+    });
   }
 
   // === HÀM LOAD DỰ ĐOÁN ===
